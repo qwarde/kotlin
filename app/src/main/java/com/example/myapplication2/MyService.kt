@@ -23,14 +23,17 @@ class MyService : Service() {
             Log.d("MyService", "Fibonacci result for n=$n: $result")
 
             // Отправляем результат в Activity через Broadcast
-            val resultIntent = Intent("com.example.myapplication2.RESULT")
+            val resultIntent = Intent(ACTION)
             resultIntent.putExtra("result", result.toString())
+            resultIntent.setPackage("com.example.myapplication2")
             sendBroadcast(resultIntent)
         }.start()
 
         return START_NOT_STICKY
     }
 
+    //TODO Тут надо испольщовать Bigint
+    // (иначе переполнение будет слишком рано)
     private fun calculateFibonacci(n: Int): Long {
         var a = 0L
         var b = 1L
@@ -40,6 +43,11 @@ class MyService : Service() {
             b = temp
         }
         return b
+    }
+
+    companion object {
+        //Чтоб не сравнивать строки - поместим в константу
+        const val ACTION = "com.example.myapplication2.RESULT"
     }
 }
 
