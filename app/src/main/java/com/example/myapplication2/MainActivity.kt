@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import com.example.myapplication2.ui.theme.MyApplication2Theme
 
 class MainActivity : ComponentActivity() {
@@ -46,12 +47,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val filter = IntentFilter("com.example.myapplication2.RESULT")
-        val res = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
-        } else {
-            TODO("VERSION.SDK_INT < TIRAMISU")
-        }
+        val action = MyService.ACTION
+        val filter = IntentFilter(action)
+        ContextCompat.registerReceiver(this,receiver, filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     override fun onDestroy() {
